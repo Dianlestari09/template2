@@ -1,0 +1,330 @@
+# astro-haze
+
+> A glassmorphism Astro 7 theme for publishing, portfolios, and polished product launches.
+
+![astro-haze theme screenshot](docs/screenshots/astro-haze-overview.webp)
+
+`astro-haze` is a static, content-first theme with a reusable glass UI system. It
+ships with a paginated blog, portfolio case studies, and an e-commerce landing
+page—plus the SEO, feeds, responsive behavior, and accessibility details needed
+to turn the starter into a real site.
+
+## Features
+
+- A cohesive glassmorphism system with aurora backgrounds, reusable cards,
+  buttons, badges, tags, sections, and containers
+- Light and dark color schemes with a system-aware theme toggle
+- Paginated blog with tags, table of contents, reading time, share links, and
+  previous/next navigation
+- Portfolio index, technology filters, case-study pages, and responsive galleries
+- Configurable e-commerce landing page with hero, features, benefits, pricing,
+  gallery, testimonials, FAQ, and final CTA sections
+- Astro 7 Content Layer collections with Zod-validated content
+- Markdown and MDX rendered by Astro 7's Sätteri Markdown engine
+- RSS feed and generated XML sitemap
+- Accessible landmarks, skip navigation, keyboard focus states, semantic
+  controls, and WCAG AA-conscious color and interaction patterns
+- `prefers-reduced-motion` and `prefers-reduced-transparency` support
+- AVIF-first responsive output for images imported through the shared `Picture`
+  component, with WebP fallback
+- Static output ready for Cloudflare Pages
+
+> [!NOTE]
+> Imported local images are optimized to AVIF and WebP. String paths from
+> `public/` are rendered unchanged, so optimize those files before shipping.
+
+## Quick start
+
+### Requirements
+
+- Node.js 22.12 or newer
+- npm
+
+```sh
+npm install
+npm run dev
+```
+
+Open the local URL printed by Astro.
+
+Astro 7 can detect an AI-agent environment and run the development server in
+the background. When that happens, inspect it with:
+
+```sh
+npx astro dev status
+npx astro dev logs
+```
+
+Create a production build:
+
+```sh
+npm run build
+```
+
+The static site is written to `dist/`. Additional project commands are:
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Astro development server |
+| `npm run build` | Build the production site |
+| `npm run preview` | Preview the production build locally |
+| `npm run check` | Run Astro diagnostics and TypeScript without emitting files |
+
+## Project structure
+
+```text
+src/
+├── components/
+│   ├── blog/        # Blog cards, pagination, post grid, and table of contents
+│   ├── common/      # Header, footer, SEO, theme toggle, and aurora background
+│   ├── landing/     # Config-driven landing-page sections
+│   ├── portfolio/   # Project cards and galleries
+│   └── ui/          # Shared GlassCard, Button, Picture, Tag, and layout primitives
+├── content/
+│   ├── blog/        # Markdown and MDX posts
+│   ├── landing/     # JSON or YAML landing-page data
+│   └── projects/    # Markdown and MDX portfolio case studies
+├── layouts/         # Base document layout
+├── lib/             # Shared content helpers
+├── pages/
+│   ├── blog/        # Blog index, pagination, and article routes
+│   ├── landing/     # E-commerce landing route
+│   ├── tags/        # Tag index and archive routes
+│   ├── work/        # Portfolio index and project routes
+│   └── rss.xml.ts   # RSS endpoint
+├── styles/          # Design tokens, glass effects, and global styles
+├── content.config.ts
+└── site.config.ts
+```
+
+## Site configuration
+
+Edit [`src/site.config.ts`](src/site.config.ts) for site identity, navigation,
+feature visibility, social links, and page options.
+
+### Identity and theme
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `name` | `string` | Short site or brand name used in the header and footer |
+| `title` | `string` | Default full site title |
+| `description` | `string` | Default site description and footer copy |
+| `author` | `string` | Default author identity |
+| `url` | `string` | Canonical production origin |
+| `ogImage` | `string` | Default Open Graph image path |
+| `twitterHandle` | `string` | Site or author handle for social metadata |
+| `theme.accentColor` | `string` | Accent value in the configuration contract; keep it synchronized with the CSS accent tokens described below |
+| `theme.defaultColorMode` | `'light' \| 'dark' \| 'system'` | Configured default mode; the current inline startup script falls back to the visitor's system preference |
+| `theme.showThemeToggle` | `boolean` | Theme-toggle preference in the configuration contract; the current base layout renders the toggle |
+
+### Navigation and feature flags
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `nav.main` | `Array<{ name: string; href: string }>` | Main navigation entries used by the header and footer |
+| `features.blog` | `boolean` | Shows or hides the blog entry in the main header |
+| `features.portfolio` | `boolean` | Shows or hides the portfolio entry in the main header |
+| `features.landing` | `boolean` | Shows or hides the landing-page entry in the main header |
+| `features.rss` | `boolean` | Controls RSS discovery metadata; the `/rss.xml` route remains part of the build |
+| `features.sitemap` | `boolean` | Sitemap preference in the configuration contract; sitemap generation is currently enabled in `astro.config.mjs` |
+
+Feature flags control the consumers listed above; they do not remove routes from
+the static build.
+
+### Social links
+
+All social fields are optional strings.
+
+| Field | Used for |
+| --- | --- |
+| `social.github` | GitHub link in the footer |
+| `social.twitter` | Twitter/X link in the footer |
+| `social.linkedin` | LinkedIn link in the footer |
+| `social.instagram` | Instagram link in the footer |
+| `social.youtube` | YouTube link in the footer |
+
+### Blog options
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `blog.postsPerPage` | `number` | Number of posts on each blog archive page |
+| `blog.showToc` | `boolean` | Shows the generated table of contents when headings exist |
+| `blog.showReadingTime` | `boolean` | Shows estimated reading time |
+| `blog.showShareButtons` | `boolean` | Shows article share links |
+| `blog.showRelatedPosts` | `boolean` | Shows previous/next article navigation |
+
+### Portfolio options
+
+| Field | Type | Purpose |
+| --- | --- | --- |
+| `portfolio.projectsPerPage` | `number` | Project-count preference reserved in the configuration contract; the current work index renders the full collection |
+| `portfolio.showTechStack` | `boolean` | Technology-display preference reserved in the configuration contract; the current project views show the stack |
+| `portfolio.showYear` | `boolean` | Year-display preference reserved in the configuration contract; the current project views show the year |
+
+## Adding content
+
+Collection definitions and validation rules live in
+[`src/content.config.ts`](src/content.config.ts). Astro reports invalid or
+missing fields during development and builds.
+
+### Blog posts
+
+Add `.md` or `.mdx` files to `src/content/blog/`:
+
+```md
+---
+title: "Designing with atmosphere"
+description: "How to keep glass interfaces readable and useful."
+pubDate: 2026-06-28
+updatedDate: 2026-07-02
+heroImage: "/images/blog/atmosphere.webp"
+heroImageAlt: "Layered translucent interface panels"
+tags:
+  - design
+  - astro
+author: "Your Name"
+draft: false
+featured: true
+---
+
+Write the article here.
+```
+
+| Field | Requirement |
+| --- | --- |
+| `title` | Required string |
+| `description` | Required string |
+| `pubDate` | Required date-coercible value |
+| `updatedDate` | Optional date-coercible value |
+| `heroImage` | Optional string path |
+| `heroImageAlt` | Optional string |
+| `tags` | String array; defaults to `[]` |
+| `author` | String; defaults to `Anonymous` |
+| `draft` | Boolean; defaults to `false` |
+| `featured` | Boolean; defaults to `false` |
+
+### Portfolio projects
+
+Add `.md` or `.mdx` files to `src/content/projects/`:
+
+```md
+---
+title: "Northstar"
+summary: "A clear route through complex public services."
+description: "An optional longer summary for metadata and the case-study lead."
+cover: "/images/projects/northstar-cover.webp"
+coverAlt: "Northstar shown on desktop and mobile"
+images:
+  - "/images/projects/northstar-search.webp"
+  - "/images/projects/northstar-mobile.webp"
+tech:
+  - Astro
+  - TypeScript
+role: "Design engineering"
+year: 2026
+featured: true
+links:
+  live: "https://example.com"
+  github: "https://github.com/example/northstar"
+  case: "/contact"
+client: "Northstar Council"
+duration: "16 weeks"
+---
+
+Write the case study here.
+```
+
+| Field | Requirement |
+| --- | --- |
+| `title` | Required string |
+| `summary` | Required string |
+| `description` | Optional string |
+| `cover` | Required string path |
+| `coverAlt` | Optional string |
+| `images` | Optional array of string paths |
+| `tech` | Required string array |
+| `role` | Required string |
+| `year` | Required number |
+| `featured` | Boolean; defaults to `false` |
+| `links.live` | Optional valid URL |
+| `links.github` | Optional valid URL |
+| `links.case` | Optional string path or URL |
+| `client` | Optional string |
+| `duration` | Optional string |
+
+### Landing-page data
+
+Add `.json`, `.yaml`, or `.yml` files to `src/content/landing/`. The current
+landing route loads the first entry in this collection.
+
+Only `hero` is required:
+
+```json
+{
+  "hero": {
+    "title": "A considered product",
+    "subtitle": "Made for everyday rituals",
+    "description": "A concise value proposition.",
+    "cta": {
+      "primary": { "text": "Shop now", "href": "#pricing" },
+      "secondary": { "text": "Learn more", "href": "#features" }
+    },
+    "image": "/images/landing/product.webp"
+  }
+}
+```
+
+The complete landing schema accepts these optional sections:
+
+| Section | Shape |
+| --- | --- |
+| `features` | Array of `{ title, description, icon?, image? }` |
+| `benefits` | Array of `{ title, description, icon? }` |
+| `pricing` | Array of `{ name, price, period?, description, features, highlighted?, cta: { text, href } }`; `highlighted` defaults to `false` |
+| `gallery` | Array of `{ src, alt, caption? }` |
+| `testimonials` | Array of `{ name, role, company?, content, avatar?, rating? }`; rating must be from 1 to 5 |
+| `faq` | Array of `{ question, answer }` |
+| `finalCta` | `{ title, description, button: { text, href } }` |
+
+Within `hero`, `title`, `subtitle`, `description`, and `cta.primary` are
+required. `cta.secondary` and `image` are optional.
+
+## Customization
+
+### Accent color
+
+The rendered color system is controlled by CSS custom properties in
+[`src/styles/tokens.css`](src/styles/tokens.css). Update `--color-accent` and
+its related light, dark, and glass variants in both the light and dark token
+blocks. Keep `theme.accentColor` in `src/site.config.ts` set to the same base
+accent so configuration metadata and CSS remain aligned.
+
+### Design tokens
+
+`src/styles/tokens.css` contains color, typography, spacing, radius, transition,
+z-index, and container tokens. Core glass surfaces and fallbacks live in
+`src/styles/glass.css`; global element styles live in `src/styles/global.css`.
+
+### Images
+
+The shared `src/components/ui/Picture.astro` component produces AVIF and WebP
+sources for imported local assets. Use descriptive `alt` text and explicit
+responsive sizes. Ready-to-use generation briefs for the demo imagery are in
+[`docs/image-prompts.md`](docs/image-prompts.md).
+
+## Deploy to Cloudflare Pages
+
+Create a Cloudflare Pages project connected to the repository and use:
+
+| Setting | Value |
+| --- | --- |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Node.js version | `22.12` or newer |
+
+Set `siteConfig.url` and the `site` value in `astro.config.mjs` to the final
+production origin before deploying.
+
+## License
+
+Released under the [MIT License](LICENSE).

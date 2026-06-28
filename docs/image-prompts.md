@@ -15,25 +15,13 @@
 
 ### ~~public/images/projects/northstar-directory.webp~~ — ✅ 配置済み
 
-### public/images/projects/fieldnote-cover.webp — 1600×1000 (WebP)
-
-```
-A research knowledge-base interface on frosted glass: a left sidebar of saved studies, a central document with several highlighted observation snippets, and a search bar showing instant filtered results. Scholarly but modern. Premium glassmorphism UI: frosted translucent panels with soft gaussian blur over a layered aurora-gradient background of violet, electric blue, magenta and mint green; faint film grain; a thin light highlight along the top edge of each panel; soft ambient shadows; clean geometric sans-serif typography; generous whitespace; calm high-end product design aesthetic; dark theme. High detail, crisp, realistic interface, no logos, no watermarks, no gibberish text, legible short labels only. 1600x1000.
-```
+### ~~public/images/projects/fieldnote-cover.webp~~ — ✅ 配置済み
 
 ### ~~public/images/projects/fieldnote-library.webp~~ — ✅ 配置済み
 
-### public/images/projects/fieldnote-evidence.webp — 1600×1200 (WebP)
+### ~~public/images/projects/fieldnote-evidence.webp~~ — ✅ 配置済み
 
-```
-A document detail view where key sentences are highlighted as "evidence", with margin annotations connected by thin lines to a side panel. Premium glassmorphism UI: frosted translucent panels with soft gaussian blur over a layered aurora-gradient background of violet, electric blue, magenta and mint green; faint film grain; a thin light highlight along the top edge of each panel; soft ambient shadows; clean geometric sans-serif typography; generous whitespace; calm high-end product design aesthetic; dark theme. High detail, crisp, realistic interface, no logos, no watermarks, no gibberish text, legible short labels only. 1600x1200.
-```
-
-### public/images/projects/fieldnote-timeline.webp — 1600×1200 (WebP)
-
-```
-A horizontal research timeline on frosted glass: milestones and interview events plotted along a line, each node a small frosted card with a date and a short label. Premium glassmorphism UI: frosted translucent panels with soft gaussian blur over a layered aurora-gradient background of violet, electric blue, magenta and mint green; faint film grain; a thin light highlight along the top edge of each panel; soft ambient shadows; clean geometric sans-serif typography; generous whitespace; calm high-end product design aesthetic; dark theme. High detail, crisp, realistic interface, no logos, no watermarks, no gibberish text, legible short labels only. 1600x1200.
-```
+### ~~public/images/projects/fieldnote-timeline.webp~~ — ✅ 配置済み
 
 ### public/images/projects/interval-cover.webp — 1600×1000 (WebP)
 

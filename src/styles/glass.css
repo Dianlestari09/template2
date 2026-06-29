@@ -10,15 +10,6 @@
   transition: all var(--transition-base);
 }
 
-/* Solid glass for better readability */
-.glass-solid {
-  background: var(--glass-bg-solid);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
 /* Glass panel component */
 .glass-panel {
   background: var(--glass-bg);
@@ -132,49 +123,6 @@
   z-index: var(--z-sticky);
 }
 
-/* Glass input field */
-.glass-input {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-sm) var(--space-md);
-  color: var(--color-text);
-  transition: all var(--transition-fast);
-}
-
-.glass-input:focus {
-  outline: none;
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-glass);
-}
-
-/* Glass modal backdrop */
-.glass-backdrop {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-overlay);
-}
-
-/* Glass badge/tag */
-.glass-badge {
-  background: var(--glass-bg);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-full);
-  padding: var(--space-xs) var(--space-sm);
-  font-size: var(--text-sm);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
 /* Glass divider */
 .glass-divider {
   height: 1px;
@@ -191,21 +139,13 @@
 /* Fallback for browsers without backdrop-filter support */
 @supports not (backdrop-filter: blur(1px)) {
   .glass,
-  .glass-solid,
   .glass-panel,
   .glass-card,
   .glass-button,
-  .glass-nav,
-  .glass-input {
+  .glass-nav {
     background: var(--color-surface);
     opacity: 0.95;
   }
-}
-
-/* Focus styles for accessibility */
-.glass-interactive:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
 }
 
 /* High contrast mode adjustments */

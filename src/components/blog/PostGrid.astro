@@ -1,6 +1,7 @@
 ---
 import BlogCard from './BlogCard.astro';
 import { readingTime, type Post } from '@/lib/posts';
+import siteConfig from '@/site.config';
 
 export interface Props {
   posts: Post[];
@@ -8,6 +9,10 @@ export interface Props {
 }
 
 const { posts, columns = 'auto' } = Astro.props;
+
+// Honour the same flag the single-post page does, so the card grid hides
+// reading time when blog.showReadingTime is false.
+const showReadingTime = siteConfig.blog.showReadingTime;
 ---
 
 <div class={`posts-grid posts-grid--${columns}`}>
@@ -21,7 +26,7 @@ const { posts, columns = 'auto' } = Astro.props;
         heroImageAlt={post.data.heroImageAlt}
         tags={post.data.tags}
         href={`/blog/${post.id}`}
-        readingTime={readingTime(post.body)}
+        readingTime={showReadingTime ? readingTime(post.body) : undefined}
         featured={post.data.featured}
       />
     ))

@@ -30,8 +30,11 @@ to turn the starter into a real site.
 - Static output ready for Cloudflare Pages
 
 > [!NOTE]
-> Imported local images are optimized to AVIF and WebP. String paths from
-> `public/` are rendered unchanged, so optimize those files before shipping.
+> Blog hero images and project covers/galleries are validated with Astro's
+> `image()` helper and optimized to AVIF/WebP with a responsive `srcset`. Store
+> them under `src/assets/` and reference them with a path relative to the
+> Markdown file (e.g. `../../assets/images/blog/atmosphere.webp`). Remote URLs
+> and `public/` string paths (e.g. the landing demo) are rendered unchanged.
 
 ## Quick start
 
@@ -177,7 +180,7 @@ title: "Designing with atmosphere"
 description: "How to keep glass interfaces readable and useful."
 pubDate: 2026-06-28
 updatedDate: 2026-07-02
-heroImage: "/images/blog/atmosphere.webp"
+heroImage: "../../assets/images/blog/atmosphere.webp"
 heroImageAlt: "Layered translucent interface panels"
 tags:
   - design
@@ -196,7 +199,7 @@ Write the article here.
 | `description` | Required string |
 | `pubDate` | Required date-coercible value |
 | `updatedDate` | Optional date-coercible value |
-| `heroImage` | Optional string path |
+| `heroImage` | Optional local image under `src/assets/` (relative path), optimized via `astro:assets` |
 | `heroImageAlt` | Optional string |
 | `tags` | String array; defaults to `[]` |
 | `author` | String; defaults to `Anonymous` |
@@ -212,11 +215,11 @@ Add `.md` or `.mdx` files to `src/content/projects/`:
 title: "Northstar"
 summary: "A clear route through complex public services."
 description: "An optional longer summary for metadata and the case-study lead."
-cover: "/images/projects/northstar-cover.webp"
+cover: "../../assets/images/projects/northstar-cover.webp"
 coverAlt: "Northstar shown on desktop and mobile"
 images:
-  - "/images/projects/northstar-search.webp"
-  - "/images/projects/northstar-mobile.webp"
+  - "../../assets/images/projects/northstar-search.webp"
+  - "../../assets/images/projects/northstar-mobile.webp"
 tech:
   - Astro
   - TypeScript
@@ -239,9 +242,9 @@ Write the case study here.
 | `title` | Required string |
 | `summary` | Required string |
 | `description` | Optional string |
-| `cover` | Required string path |
+| `cover` | Required local image under `src/assets/` (relative path), optimized via `astro:assets` |
 | `coverAlt` | Optional string |
-| `images` | Optional array of string paths |
+| `images` | Optional array of local images under `src/assets/` (relative paths) |
 | `tech` | Required string array |
 | `role` | Required string |
 | `year` | Required number |

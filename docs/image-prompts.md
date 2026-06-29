@@ -1,7 +1,7 @@
 # astro-haze — Image generation prompts
 
 各画像は下のプロンプトをそのまま ChatGPT / DALL·E に貼り付けて生成してください。
-生成後、見出しに書いたパス・寸法・フォーマットで `public/images/...` に保存します（`public/` が無ければ作成）。フォーマットは projects=WebP / blog=JPG / og=PNG。
+生成後、見出しに書いた寸法・フォーマットで保存します。projects/blog 画像は `astro:assets` で最適化されるため `src/assets/images/...` に置きます（frontmatter からは Markdown 相対パスで参照）。og 画像のみ `public/` 直下のままです。フォーマットは projects=WebP / blog=JPG / og=PNG。
 
 ---
 

@@ -45,28 +45,37 @@ function normalizeJson(value: any) {
 
 // === BLOG POSTS ===
 export async function getPost(id: number) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return null;
   const { data, error } = await supabase.from('blog_posts').select('*').eq('id', id).single();
-  if (error && error.code !== 'PGRST116') throw error;
+  if (error && error.code !== 'PGRST116') {
+    console.error('getPost error:', error.message);
+    return null;
+  }
   return data;
 }
 
 export async function getAllPosts() {
   if (!supabase) return [];
   const { data, error } = await supabase.from('blog_posts').select('*').order('published_at', { ascending: false });
-  if (error) throw error;
+  if (error) {
+    console.error('getAllPosts error:', error.message);
+    return [];
+  }
   return data || [];
 }
 
 export async function getPostBySlug(slug: string) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return null;
   const { data, error } = await supabase.from('blog_posts').select('*').eq('slug', slug).single();
-  if (error && error.code !== 'PGRST116') throw error;
+  if (error && error.code !== 'PGRST116') {
+    console.error('getPostBySlug error:', error.message);
+    return null;
+  }
   return data;
 }
 
 export async function createPost(data: any) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return null;
   const insertData = {
     title: data.title,
     slug: data.slug,
@@ -78,12 +87,15 @@ export async function createPost(data: any) {
     tags: normalizeTags(data.tags),
   };
   const { data: result, error } = await supabase.from('blog_posts').insert([insertData]).select('id').single();
-  if (error) throw error;
+  if (error) {
+    console.error('createPost error:', error.message);
+    return null;
+  }
   return result?.id;
 }
 
 export async function updatePost(id: number, data: any) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return;
   const updateData: any = {};
   if (data.title) updateData.title = data.title;
   if (data.slug) updateData.slug = data.slug;
@@ -97,39 +109,52 @@ export async function updatePost(id: number, data: any) {
   if (Object.keys(updateData).length === 0) return;
   
   const { error } = await supabase.from('blog_posts').update(updateData).eq('id', id);
-  if (error) throw error;
+  if (error) {
+    console.error('updatePost error:', error.message);
+  }
 }
 
 export async function deletePost(id: number) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return;
   const { error } = await supabase.from('blog_posts').delete().eq('id', id);
-  if (error) throw error;
+  if (error) {
+    console.error('deletePost error:', error.message);
+  }
 }
 
 // === PROJECTS ===
 export async function getProject(id: number) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return null;
   const { data, error } = await supabase.from('projects').select('*').eq('id', id).single();
-  if (error && error.code !== 'PGRST116') throw error;
+  if (error && error.code !== 'PGRST116') {
+    console.error('getProject error:', error.message);
+    return null;
+  }
   return data;
 }
 
 export async function getAllProjects() {
   if (!supabase) return [];
   const { data, error } = await supabase.from('projects').select('*').order('featured', { ascending: false }).order('year', { ascending: false }).order('published_at', { ascending: false });
-  if (error) throw error;
+  if (error) {
+    console.error('getAllProjects error:', error.message);
+    return [];
+  }
   return data || [];
 }
 
 export async function getProjectBySlug(slug: string) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return null;
   const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).single();
-  if (error && error.code !== 'PGRST116') throw error;
+  if (error && error.code !== 'PGRST116') {
+    console.error('getProjectBySlug error:', error.message);
+    return null;
+  }
   return data;
 }
 
 export async function createProject(data: any) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return null;
   const insertData = {
     title: data.title,
     slug: data.slug,
@@ -148,12 +173,15 @@ export async function createProject(data: any) {
     images: normalizeJson(data.images || '[]'),
   };
   const { data: result, error } = await supabase.from('projects').insert([insertData]).select('id').single();
-  if (error) throw error;
+  if (error) {
+    console.error('createProject error:', error.message);
+    return null;
+  }
   return result?.id;
 }
 
 export async function updateProject(id: number, data: any) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return;
   const updateData: any = {};
   if (data.title) updateData.title = data.title;
   if (data.slug) updateData.slug = data.slug;
@@ -174,39 +202,52 @@ export async function updateProject(id: number, data: any) {
   if (Object.keys(updateData).length === 0) return;
   
   const { error } = await supabase.from('projects').update(updateData).eq('id', id);
-  if (error) throw error;
+  if (error) {
+    console.error('updateProject error:', error.message);
+  }
 }
 
 export async function deleteProject(id: number) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return;
   const { error } = await supabase.from('projects').delete().eq('id', id);
-  if (error) throw error;
+  if (error) {
+    console.error('deleteProject error:', error.message);
+  }
 }
 
 // === PRODUCTS ===
 export async function getProduct(id: number) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return null;
   const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
-  if (error && error.code !== 'PGRST116') throw error;
+  if (error && error.code !== 'PGRST116') {
+    console.error('getProduct error:', error.message);
+    return null;
+  }
   return data;
 }
 
 export async function getAllProducts() {
   if (!supabase) return [];
   const { data, error } = await supabase.from('products').select('*').order('published_at', { ascending: false });
-  if (error) throw error;
+  if (error) {
+    console.error('getAllProducts error:', error.message);
+    return [];
+  }
   return data || [];
 }
 
 export async function getProductBySlug(slug: string) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return null;
   const { data, error } = await supabase.from('products').select('*').eq('slug', slug).single();
-  if (error && error.code !== 'PGRST116') throw error;
+  if (error && error.code !== 'PGRST116') {
+    console.error('getProductBySlug error:', error.message);
+    return null;
+  }
   return data;
 }
 
 export async function createProduct(data: any) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return null;
   const insertData = {
     title: data.title,
     slug: data.slug,
@@ -219,12 +260,15 @@ export async function createProduct(data: any) {
     tags: normalizeTags(data.tags),
   };
   const { data: result, error } = await supabase.from('products').insert([insertData]).select('id').single();
-  if (error) throw error;
+  if (error) {
+    console.error('createProduct error:', error.message);
+    return null;
+  }
   return result?.id;
 }
 
 export async function updateProduct(id: number, data: any) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return;
   const updateData: any = {};
   if (data.title) updateData.title = data.title;
   if (data.slug) updateData.slug = data.slug;
@@ -239,11 +283,15 @@ export async function updateProduct(id: number, data: any) {
   if (Object.keys(updateData).length === 0) return;
   
   const { error } = await supabase.from('products').update(updateData).eq('id', id);
-  if (error) throw error;
+  if (error) {
+    console.error('updateProduct error:', error.message);
+  }
 }
 
 export async function deleteProduct(id: number) {
-  if (!supabase) throw new Error('Supabase not configured');
+  if (!supabase) return;
   const { error } = await supabase.from('products').delete().eq('id', id);
-  if (error) throw error;
+  if (error) {
+    console.error('deleteProduct error:', error.message);
+  }
 }

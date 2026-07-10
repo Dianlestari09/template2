@@ -1,18 +1,16 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
+import vercel from '@astrojs/vercel';
 import siteConfig from './src/site.config.ts';
 
 // https://astro.build/config
 export default defineConfig({
-  // GitHub Pages deployment settings
-  site: 'https://indrianapekael.github.io/souvenirset',
-  base: '/souvenirset/',
-  // MDX is always enabled so `.mdx` files in the content collections render
-  // (the blog/projects globs already accept them). Sitemap is gated by the
-  // `features.sitemap` flag in site.config.
+  // Vercel deployment settings
+  site: 'https://your-vercel-domain.vercel.app',
   integrations: [mdx(), ...(siteConfig.features.sitemap ? [sitemap()] : [])],
-  output: 'static',
+  adapter: vercel(),
+  output: 'server',
   build: {
     format: 'directory',
     inlineStylesheets: 'auto'

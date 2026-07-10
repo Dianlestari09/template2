@@ -11,10 +11,7 @@ export default defineConfig({
   integrations: [mdx(), ...(siteConfig.features.sitemap ? [sitemap()] : [])],
   adapter: vercel(),
   output: 'server',
-  build: {
-    format: 'directory',
-    inlineStylesheets: 'auto'
-  },
+
   vite: {
     build: {
       cssMinify: true

@@ -9,9 +9,8 @@ export default defineConfig({
   // Vercel deployment settings
   site: 'https://your-vercel-domain.vercel.app',
   integrations: [mdx(), ...(siteConfig.features.sitemap ? [sitemap()] : [])],
-  adapter: vercel({
-    includeFiles: ['./dist/**/*']
-  }),
+  outDir: './build',
+  adapter: vercel(),
   output: 'server',
   vite: {
     build: {

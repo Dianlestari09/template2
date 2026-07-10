@@ -3,9 +3,14 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_KEY || '';
 
-export const supabase = supabaseUrl && supabaseKey 
-  ? createClient(supabaseUrl, supabaseKey) 
-  : null;
+export let supabase: any = null;
+try {
+  if (supabaseUrl && supabaseKey) {
+    supabase = createClient(supabaseUrl, supabaseKey);
+  }
+} catch (e: any) {
+  console.error('Failed to initialize Supabase client. Check if SUPABASE_URL is a valid URL (including https://).', e.message);
+}
 
 function normalizeTags(tags?: string | string[]) {
   if (!tags) return '[]';

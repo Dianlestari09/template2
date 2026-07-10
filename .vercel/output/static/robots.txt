@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://kpab.github.io/astro-haze/sitemap-index.xml

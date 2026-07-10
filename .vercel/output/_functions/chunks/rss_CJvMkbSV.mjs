@@ -1,6 +1,6 @@
 import { t as __exportAll } from "./rolldown-runtime_D7D4PA-g.mjs";
 import { n as siteConfig, t as withBase } from "./url_CGAqnK3O.mjs";
-import { n as getAllPosts } from "./db_DK9W4roq.mjs";
+import { s as getAllPosts } from "./db_CQnXq70y.mjs";
 import rss from "@astrojs/rss";
 //#region src/pages/rss.xml.ts
 var rss_xml_exports = /* @__PURE__ */ __exportAll({ GET: () => GET });

@@ -5,9 +5,9 @@ import { t as $$BaseLayout } from "./BaseLayout_hBMFtw2l.mjs";
 import { n as siteConfig, t as withBase } from "./url_CGAqnK3O.mjs";
 import { n as $$GlassPanel, r as $$Header, t as $$Footer } from "./Footer_Dn3ReZgh.mjs";
 import { t as $$GlassCard } from "./GlassCard_BGeSJzan.mjs";
+import { d as getPostBySlug, u as getPost } from "./db_CQnXq70y.mjs";
 import { t as $$Tag } from "./Tag_DK1SaJVi.mjs";
 import { t as $$Picture } from "./Picture_Bqotq_aC.mjs";
-import { a as getPost, o as getPostBySlug } from "./db_DK9W4roq.mjs";
 import MarkdownIt from "markdown-it";
 //#region src/pages/blog/[...slug].astro
 var ____slug__exports = /* @__PURE__ */ __exportAll({

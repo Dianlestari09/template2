@@ -1,19 +1,44 @@
 import mysql from 'mysql2/promise';
 import fs from 'fs/promises';
+import os from 'os';
 import path from 'path';
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '3306'),
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'blog',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+const DB_CONFIGURED =
+  typeof process.env.DB_HOST !== 'undefined' &&
+  typeof process.env.DB_USER !== 'undefined' &&
+  typeof process.env.DB_NAME !== 'undefined';
+
+const pool = DB_CONFIGURED
+  ? mysql.createPool({
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || '3306'),
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || '',
+      database: process.env.DB_NAME || 'blog',
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+    })
+  : null;
+
+function getTempDevPath(filePath: string) {
+  return path.join(os.tmpdir(), 'astro-dev-data', path.basename(filePath));
+}
+
+async function tryReadFile(filePath: string) {
+  try {
+    return await fs.readFile(filePath, 'utf8');
+  } catch (err: any) {
+    if (err.code === 'ENOENT') return null;
+    throw err;
+  }
+}
 
 export async function query(sql: string, values?: any[]) {
+  if (!pool) {
+    throw new Error('Database not configured');
+  }
+
   const connection = await pool.getConnection();
   try {
     const [results] = await connection.execute(sql, values);
@@ -28,19 +53,47 @@ const DEV_PROJECTS_PATH = path.join(process.cwd(), 'src', 'data', 'dev-projects.
 const DEV_PRODUCTS_PATH = path.join(process.cwd(), 'src', 'data', 'dev-products.json');
 
 async function loadDevData(filePath: string) {
-  try {
-    const raw = await fs.readFile(filePath, 'utf8');
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) return parsed;
-  } catch (_err) {
-    // ignore and return empty
+  const fallbackPath = getTempDevPath(filePath);
+
+  const primary = await tryReadFile(filePath);
+  if (primary !== null) {
+    try {
+      const parsed = JSON.parse(primary);
+      if (Array.isArray(parsed)) return parsed;
+    } catch {
+      // invalid primary JSON: continue to fallback or empty
+    }
   }
+
+  const fallback = await tryReadFile(fallbackPath);
+  if (fallback !== null) {
+    try {
+      const parsed = JSON.parse(fallback);
+      if (Array.isArray(parsed)) return parsed;
+    } catch {
+      // invalid fallback JSON: silently ignore
+    }
+  }
+
   return [];
 }
 
 async function saveDevData(filePath: string, data: any[]) {
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
+  const payload = JSON.stringify(data, null, 2);
+  const tempPath = getTempDevPath(filePath);
+
+  try {
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.writeFile(filePath, payload, 'utf8');
+    return;
+  } catch (err: any) {
+    if (err.code !== 'EACCES' && err.code !== 'EPERM' && err.code !== 'EISDIR' && err.code !== 'ENOENT') {
+      throw err;
+    }
+  }
+
+  await fs.mkdir(path.dirname(tempPath), { recursive: true });
+  await fs.writeFile(tempPath, payload, 'utf8');
 }
 
 function normalizeTags(tags?: string | string[]) {

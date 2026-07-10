@@ -4,7 +4,7 @@ import "./compiler_Y7Shd06a.mjs";
 import { t as $$BaseLayout } from "./BaseLayout_hBMFtw2l.mjs";
 import { n as siteConfig } from "./url_CGAqnK3O.mjs";
 import { r as $$Header, t as $$Footer } from "./Footer_Dn3ReZgh.mjs";
-import { i as getAllProjects } from "./db_DK9W4roq.mjs";
+import { l as getAllProjects } from "./db_CQnXq70y.mjs";
 import { t as $$WorkArchive } from "./WorkArchive_DNdnMyqT.mjs";
 //#region src/pages/work/page/[page].astro
 var _page__exports = /* @__PURE__ */ __exportAll({

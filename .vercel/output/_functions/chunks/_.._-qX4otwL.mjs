@@ -7,8 +7,8 @@ import { r as $$Header, t as $$Footer } from "./Footer_Dn3ReZgh.mjs";
 import { t as $$Container } from "./Container_DC2M1AfB.mjs";
 import { t as $$Button } from "./Button_BxPVawMq.mjs";
 import { t as $$GlassCard } from "./GlassCard_BGeSJzan.mjs";
+import { m as getProjectBySlug } from "./db_CQnXq70y.mjs";
 import { t as $$Picture } from "./Picture_Bqotq_aC.mjs";
-import { s as getProjectBySlug } from "./db_DK9W4roq.mjs";
 //#region src/components/portfolio/ProjectGallery.astro
 createAstro("https://your-vercel-domain.vercel.app");
 var $$ProjectGallery = createComponent(($$result, $$props, $$slots) => {

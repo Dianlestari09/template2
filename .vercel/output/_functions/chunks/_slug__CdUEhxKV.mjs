@@ -5,8 +5,8 @@ import { t as $$BaseLayout } from "./BaseLayout_hBMFtw2l.mjs";
 import { n as $$GlassPanel, r as $$Header, t as $$Footer } from "./Footer_Dn3ReZgh.mjs";
 import { t as $$Container } from "./Container_DC2M1AfB.mjs";
 import { t as $$Button } from "./Button_BxPVawMq.mjs";
+import { c as getAllProducts } from "./db_CQnXq70y.mjs";
 import { t as $$Picture } from "./Picture_Bqotq_aC.mjs";
-import { r as getAllProducts } from "./db_DK9W4roq.mjs";
 //#region src/pages/landing/[slug].astro
 var _slug__exports = /* @__PURE__ */ __exportAll({
 	default: () => $$Slug,

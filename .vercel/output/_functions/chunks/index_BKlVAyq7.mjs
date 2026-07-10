@@ -5,7 +5,7 @@ import { t as $$BaseLayout } from "./BaseLayout_hBMFtw2l.mjs";
 import { n as siteConfig } from "./url_CGAqnK3O.mjs";
 import { n as $$GlassPanel, r as $$Header, t as $$Footer } from "./Footer_Dn3ReZgh.mjs";
 import { t as $$Container } from "./Container_DC2M1AfB.mjs";
-import { n as getAllPosts } from "./db_DK9W4roq.mjs";
+import { s as getAllPosts } from "./db_CQnXq70y.mjs";
 import { t as $$PostGrid } from "./PostGrid_BLkYh0I9.mjs";
 import { t as $$Pagination } from "./Pagination_DPaPW-iC.mjs";
 //#region src/pages/blog/index.astro

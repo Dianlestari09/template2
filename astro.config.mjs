@@ -5,14 +5,14 @@ import siteConfig from './src/site.config.ts';
 
 // https://astro.build/config
 export default defineConfig({
-  // Served from root
-  site: 'https://example.com',
-  // base: '/astro-haze',
+  // GitHub Pages deployment settings
+  site: 'https://indrianapekael.github.io/souvenirset',
+  base: '/souvenirset/',
   // MDX is always enabled so `.mdx` files in the content collections render
   // (the blog/projects globs already accept them). Sitemap is gated by the
   // `features.sitemap` flag in site.config.
   integrations: [mdx(), ...(siteConfig.features.sitemap ? [sitemap()] : [])],
-  output: 'server',
+  output: 'static',
   build: {
     format: 'directory',
     inlineStylesheets: 'auto'

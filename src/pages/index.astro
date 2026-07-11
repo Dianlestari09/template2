@@ -26,7 +26,7 @@ const showcases = [
     type: 'Produk',
     title: product?.title || 'Paket Seminar Standar',
     description: product?.excerpt || 'Paket lengkap untuk kebutuhan seminar kecil hingga menengah: tas, buku, sertifikat, dan ID card.',
-    href: product?.slug ? `/landing/${product.slug}` : '/landing',
+    href: product?.link ? product.link : (product?.slug ? `/landing/${product.slug}` : '/landing'),
     cta: 'Lihat produk',
     className: 'showcase--journal',
   },

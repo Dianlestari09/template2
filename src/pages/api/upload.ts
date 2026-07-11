@@ -1,19 +1,8 @@
 import type { APIRoute } from 'astro';
-import fs from 'fs';
-import path from 'path';
-import { promises as fsPromises } from 'fs';
+import { supabase } from '@/lib/db';
 
 // Ensure this endpoint runs server-side so uploads and request headers work
 export const prerender = false;
-
-// Create public/uploads directory if it doesn't exist
-async function ensureUploadsDir() {
-  const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-  if (!fs.existsSync(uploadsDir)) {
-    await fsPromises.mkdir(uploadsDir, { recursive: true });
-  }
-  return uploadsDir;
-}
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -27,10 +16,7 @@ export const POST: APIRoute = async ({ request }) => {
       console.log('[UPLOAD] No file found in formData or unsupported form value');
       return new Response(
         JSON.stringify({ error: 'Tidak ada file yang diunggah atau format file tidak didukung' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
@@ -44,13 +30,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (!isImageType && !isImageExtension) {
       return new Response(
-        JSON.stringify({
-          error: 'File harus berupa gambar (JPG, PNG, WebP, GIF, AVIF)',
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
+        JSON.stringify({ error: 'File harus berupa gambar (JPG, PNG, WebP, GIF, AVIF)' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
@@ -58,44 +39,53 @@ export const POST: APIRoute = async ({ request }) => {
     if (file.size > 5 * 1024 * 1024) {
       return new Response(
         JSON.stringify({ error: 'Ukuran file maksimal 5MB' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    const uploadsDir = await ensureUploadsDir();
+    if (!supabase) {
+      throw new Error("Supabase client tidak diinisialisasi. Cek .env file.");
+    }
 
     // Generate unique filename
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 8);
     const originalName = file.name.replace(/[^a-z0-9.-]/gi, '_').toLowerCase();
     const filename = `${timestamp}-${randomString}-${originalName}`;
-    const filepath = path.join(uploadsDir, filename);
 
-    // Convert file to buffer and save
+    // Convert file to buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    await fsPromises.writeFile(filepath, buffer);
 
-    // Return relative path for use in database
-    const relativePath = `/uploads/${filename}`;
+    // Upload to Supabase Storage bucket named 'uploads'
+    const { data, error } = await supabase.storage
+      .from('uploads')
+      .upload(filename, buffer, {
+        contentType: imageFile.type,
+        upsert: false
+      });
 
-    return new Response(JSON.stringify({ url: relativePath }), {
+    if (error) {
+      console.error('Supabase upload error:', error);
+      throw new Error(`Gagal mengunggah ke Supabase: ${error.message}`);
+    }
+
+    // Get public URL
+    const { data: publicUrlData } = supabase.storage
+      .from('uploads')
+      .getPublicUrl(filename);
+
+    const publicUrl = publicUrlData.publicUrl;
+
+    return new Response(JSON.stringify({ url: publicUrl }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error: any) {
     console.error('Upload error:', error);
     return new Response(
-      JSON.stringify({
-        error: 'Gagal mengunggah gambar: ' + error.message,
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
+      JSON.stringify({ error: 'Gagal mengunggah gambar: ' + error.message }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 };

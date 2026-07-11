@@ -47,9 +47,11 @@ const { plans } = Astro.props;
           <ul>
             {plan.features.map((feature) => <li><span aria-hidden="true">✓</span>{feature}</li>)}
           </ul>
-          <Button href={plan.cta.href} external variant={plan.highlighted ? 'solid' : 'outline'} fullWidth>
-            {plan.cta.text}
-          </Button>
+          <div class="pricing-card__cta">
+            <Button href={plan.cta.href} external variant={plan.highlighted ? 'solid' : 'outline'} fullWidth>
+              {plan.cta.text}
+            </Button>
+          </div>
         </GlassCard>
       ))
     }
@@ -65,8 +67,9 @@ const { plans } = Astro.props;
   }
 
   .pricing-card {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100%;
   }
 
   .pricing-card--featured {
@@ -134,7 +137,12 @@ const { plans } = Astro.props;
     gap: var(--space-sm);
     list-style: none;
     padding: var(--space-lg) 0 var(--space-xl);
-    margin: 0 0 auto;
+    margin: 0;
+  }
+
+  .pricing-card__cta {
+    margin-top: auto;
+    width: 100%;
   }
 
   li {

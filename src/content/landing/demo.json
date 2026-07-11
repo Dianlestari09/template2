@@ -13,7 +13,7 @@
         "href": "/blog"
       }
     },
-    "image": "/src/assets/images/product/produk-hero.webp"
+    "image": "/images/product/produk-hero.webp"
   },
   "features": [
     {
@@ -83,17 +83,17 @@
   ],
   "gallery": [
     {
-      "src": "/src/assets/images/product/paket-terorganisir.webp",
+      "src": "/images/product/paket-terorganisir.webp",
       "alt": "Seminar kit dengan materi peserta dan sertifikat",
       "caption": "Paket peserta lengkap untuk acara terorganisir"
     },
     {
-      "src": "/src/assets/images/product/produk-seminar-profesional.webp",
+      "src": "/images/product/produk-seminar-profesional.webp",
       "alt": "Meja seminar dengan bloknote dan lencana nama",
       "caption": "Detail yang membuat seminar terlihat profesional"
     },
     {
-      "src": "/src/assets/images/product/service-lima.webp",
+      "src": "/images/product/service-lima.webp",
       "alt": "Peserta seminar dengan perlengkapan acara",
       "caption": "Pengalaman peserta yang rapi dan terstruktur"
     }
